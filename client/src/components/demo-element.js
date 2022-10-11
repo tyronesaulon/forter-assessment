@@ -1,11 +1,11 @@
 import {LitElement, html} from 'lit';
-import style from './admin-config.css.js';
+import style from './demo-element.css.js';
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
 /**
  * An example element.
  */
-export class MyElement extends LitElement {
+export class DemoElement extends LitElement {
   static get properties() {
     return {
       /**
@@ -42,10 +42,12 @@ export class MyElement extends LitElement {
   render() {
     const {name, count} = this;
     return html`
-      <div>Hi, my name is: ${name}</div>
-      <button @click="${this.onButtonClick}">Current clicks: ${count}</button>
+      <div>Hi, this is a demo element!</div>
+      <div>Like this, you can render reactive properties: ${name}</div>
+      <div>And like this, you can listen to events:</div>
+      <button @click="${this.onButtonClick}">Number of clicks: ${count}</button>
     `;
   }
 }
 
-window.customElements.define('my-element', MyElement);
+window.customElements.define('demo-element', DemoElement);
