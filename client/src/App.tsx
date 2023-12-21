@@ -1,20 +1,16 @@
 import './App.css';
 import { ChatRoom } from './pages/ChatRoom/ChatRoom.tsx';
-import {
-  createTheme,
-  MantineProvider,
-  TypographyStylesProvider,
-} from '@mantine/core';
-
-const theme = createTheme({});
+import { UserContextProvider } from './contexts/UserContext/UserContext.tsx';
+import { ApolloProvider } from '@apollo/client';
+import { apollo } from './clients/apollo.client.ts';
 
 function App() {
   return (
-    <MantineProvider theme={theme}>
-      <TypographyStylesProvider>
+    <ApolloProvider client={apollo}>
+      <UserContextProvider>
         <ChatRoom />
-      </TypographyStylesProvider>
-    </MantineProvider>
+      </UserContextProvider>
+    </ApolloProvider>
   );
 }
 

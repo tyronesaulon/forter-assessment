@@ -1,5 +1,6 @@
-import { Button, Textarea } from '@mantine/core';
+import { ActionIcon, Textarea } from '@mantine/core';
 import { useState } from 'react';
+import { IconSend } from '@tabler/icons-react';
 
 export interface ChatRoomInput {
   onSend: (message: string) => void;
@@ -14,8 +15,12 @@ export function ChatRoomInput({ onSend }: ChatRoomInput) {
   return (
     <Textarea
       onChange={setMessage}
-      placeholder="Type your message"
-      rightSection={<Button onClick={handleSend}>Send</Button>}
+      placeholder="Ask a question..."
+      rightSection={
+        <ActionIcon variant="subtle" onClick={handleSend}>
+          <IconSend />
+        </ActionIcon>
+      }
     />
   );
 }

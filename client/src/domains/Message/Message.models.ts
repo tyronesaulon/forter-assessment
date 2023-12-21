@@ -1,3 +1,6 @@
 export interface Message {
-    id: number;
+  id: number;
+  text: string;
+  participantId: number;
+  createdAt: Date;
 }
