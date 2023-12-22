@@ -978,13 +978,43 @@ export type User_Variance_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
 };
 
+export type UserFragment = { __typename?: 'user', id: any, name?: string | null };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['bigint']['input']>;
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'query_root', user_by_pk?: { __typename?: 'user', id: any, name?: string | null } | null };
+
+export type CreateUserMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'mutation_root', insert_user_one?: { __typename?: 'user', id: any, name?: string | null } | null };
+
+export type CreateMessageMutationVariables = Exact<{
+  user_id: Scalars['bigint']['input'];
+  text: Scalars['String']['input'];
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'mutation_root', insert_message_one?: { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null } | null };
+
 export type ChatRoomMessageFragment = { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null };
 
 export type LoadChatRoomQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoadChatRoomQuery = { __typename?: 'query_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null }> };
+export type LoadChatRoomQuery = { __typename?: 'query_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null }>, user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', count: number } | null } };
 
+export const UserFragmentDoc = gql`
+    fragment User on user {
+  id
+  name
+}
+    `;
 export const ChatRoomMessageFragmentDoc = gql`
     fragment ChatRoomMessage on message {
   author
@@ -992,15 +1022,126 @@ export const ChatRoomMessageFragmentDoc = gql`
   id
   text
   user {
-    id
-    name
+    ...User
   }
 }
-    `;
+    ${UserFragmentDoc}`;
+export const GetUserByIdDocument = gql`
+    query GetUserByID($id: bigint = "") {
+  user_by_pk(id: $id) {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useGetUserByIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+      }
+export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        }
+export function useGetUserByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        }
+export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
+export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
+export type GetUserByIdSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdSuspenseQuery>;
+export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($name: String!) {
+  insert_user_one(object: {name: $name}) {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const CreateMessageDocument = gql`
+    mutation CreateMessage($user_id: bigint!, $text: String!) {
+  insert_message_one(object: {user_id: $user_id, text: $text}) {
+    ...ChatRoomMessage
+  }
+}
+    ${ChatRoomMessageFragmentDoc}`;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const LoadChatRoomDocument = gql`
     query LoadChatRoom {
   message {
     ...ChatRoomMessage
+  }
+  user_aggregate {
+    aggregate {
+      count
+    }
   }
 }
     ${ChatRoomMessageFragmentDoc}`;

@@ -7,8 +7,7 @@ export const CHAT_ROOM_MESSAGE_FRAGMENT = gql`
     id
     text
     user {
-      id
-      name
+      ...User
     }
   }
 `;
@@ -17,6 +16,11 @@ export const LOAD_CHAT_ROOM_QUERY = gql`
   query LoadChatRoom {
     message {
       ...ChatRoomMessage
+    }
+    user_aggregate {
+      aggregate {
+        count
+      }
     }
   }
 `;
