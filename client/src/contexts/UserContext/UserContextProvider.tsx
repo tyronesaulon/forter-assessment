@@ -7,6 +7,7 @@ import {
 } from 'react';
 import {
   getCachedUser,
+  getRandomUserName,
   getUserByInsertionResult,
   setCachedUser,
 } from './UserContext.utils.ts';
@@ -32,7 +33,7 @@ export function UserContextProvider({ children }: PropsWithChildren) {
       } else {
         const { data } = await createUser({
           variables: {
-            name: '',
+            name: getRandomUserName(),
           },
         });
 

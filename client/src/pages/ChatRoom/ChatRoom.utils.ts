@@ -22,7 +22,14 @@ export function getTotalParticipants(data?: LoadChatRoomQuery): number {
 }
 
 export function getUserNameByFragment(data?: ChatRoomMessageFragment): string {
-  return data?.user?.name ?? 'unknown';
+  const id = data?.user?.id ?? '';
+  const name = data?.user?.name ?? 'unknown';
+  let username = name;
+  if (id) {
+    username = name;
+  }
+
+  return username;
 }
 
 export function getTimeLabelByDate(date: Date): string {
