@@ -1,4 +1,12 @@
-import { ActionIcon, Box, Group, Stack, Text, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Group,
+  Stack,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { ChatRoomMessageFragment } from '../../../../../graphql.types.tsx';
 import {
   getTimeLabelByDate,
@@ -38,8 +46,13 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
         h="50px"
       >
         <Group justify="space-between">
-          <Text size="sm" fw={500} m={0}>
+          <Text className={Classes.username} size="sm" fw={500} m={0}>
             {name}
+            {isCurrentUser && (
+              <Badge component="span" size="xs" ml={4}>
+                You
+              </Badge>
+            )}
           </Text>
           {question && (
             <Tooltip label="Answer">
