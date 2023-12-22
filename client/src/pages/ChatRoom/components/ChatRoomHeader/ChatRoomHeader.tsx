@@ -1,5 +1,4 @@
-import { Group, Title } from '@mantine/core';
-import { User } from '../../../../domains/User/User.model.ts';
+import { Group, Skeleton, Title } from '@mantine/core';
 import { PropsWithChildren } from 'react';
 
 export const HeaderTitle = ({ children }: PropsWithChildren) => (
@@ -9,15 +8,20 @@ export const HeaderTitle = ({ children }: PropsWithChildren) => (
 );
 
 export interface ChatRoomHeaderProps {
-  users: User[];
+  totalParticipants: number;
+  loading: boolean;
 }
 
-export function ChatRoomHeader({ users }: ChatRoomHeaderProps) {
-  const length = users.length;
+export function ChatRoomHeader({
+  totalParticipants,
+  loading,
+}: ChatRoomHeaderProps) {
   return (
     <Group justify="space-between" mb="lg">
       <HeaderTitle>Clarence</HeaderTitle>
-      <HeaderTitle>{length} participants</HeaderTitle>
+      <HeaderTitle>
+        <Skeleton visible={loading}>{totalParticipants} participants</Skeleton>
+      </HeaderTitle>
     </Group>
   );
 }
