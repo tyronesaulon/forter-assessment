@@ -103,13 +103,40 @@ export enum Cursor_Ordering {
 /** columns and relationships of "message" */
 export type Message = {
   __typename?: 'message';
+  /** An array relationship */
+  answers: Array<Message>;
+  /** An aggregate relationship */
+  answers_aggregate: Message_Aggregate;
   author: Scalars['author']['output'];
   created_at: Scalars['timestamp']['output'];
   id: Scalars['bigint']['output'];
+  /** An object relationship */
+  question?: Maybe<Message>;
+  question_id?: Maybe<Scalars['bigint']['output']>;
   text?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   user?: Maybe<User>;
   user_id?: Maybe<Scalars['bigint']['output']>;
+};
+
+
+/** columns and relationships of "message" */
+export type MessageAnswersArgs = {
+  distinct_on?: InputMaybe<Array<Message_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Order_By>>;
+  where?: InputMaybe<Message_Bool_Exp>;
+};
+
+
+/** columns and relationships of "message" */
+export type MessageAnswers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Message_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Order_By>>;
+  where?: InputMaybe<Message_Bool_Exp>;
 };
 
 /** aggregated selection of "message" */
@@ -179,12 +206,14 @@ export type Message_Arr_Rel_Insert_Input = {
 export type Message_Avg_Fields = {
   __typename?: 'message_avg_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "message" */
 export type Message_Avg_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -193,9 +222,13 @@ export type Message_Bool_Exp = {
   _and?: InputMaybe<Array<Message_Bool_Exp>>;
   _not?: InputMaybe<Message_Bool_Exp>;
   _or?: InputMaybe<Array<Message_Bool_Exp>>;
+  answers?: InputMaybe<Message_Bool_Exp>;
+  answers_aggregate?: InputMaybe<Message_Aggregate_Bool_Exp>;
   author?: InputMaybe<Author_Comparison_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<Bigint_Comparison_Exp>;
+  question?: InputMaybe<Message_Bool_Exp>;
+  question_id?: InputMaybe<Bigint_Comparison_Exp>;
   text?: InputMaybe<String_Comparison_Exp>;
   user?: InputMaybe<User_Bool_Exp>;
   user_id?: InputMaybe<Bigint_Comparison_Exp>;
@@ -210,14 +243,18 @@ export enum Message_Constraint {
 /** input type for incrementing numeric columns in table "message" */
 export type Message_Inc_Input = {
   id?: InputMaybe<Scalars['bigint']['input']>;
+  question_id?: InputMaybe<Scalars['bigint']['input']>;
   user_id?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** input type for inserting data into table "message" */
 export type Message_Insert_Input = {
+  answers?: InputMaybe<Message_Arr_Rel_Insert_Input>;
   author?: InputMaybe<Scalars['author']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  question?: InputMaybe<Message_Obj_Rel_Insert_Input>;
+  question_id?: InputMaybe<Scalars['bigint']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
   user?: InputMaybe<User_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['bigint']['input']>;
@@ -229,6 +266,7 @@ export type Message_Max_Fields = {
   author?: Maybe<Scalars['author']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  question_id?: Maybe<Scalars['bigint']['output']>;
   text?: Maybe<Scalars['String']['output']>;
   user_id?: Maybe<Scalars['bigint']['output']>;
 };
@@ -238,6 +276,7 @@ export type Message_Max_Order_By = {
   author?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   text?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -248,6 +287,7 @@ export type Message_Min_Fields = {
   author?: Maybe<Scalars['author']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
+  question_id?: Maybe<Scalars['bigint']['output']>;
   text?: Maybe<Scalars['String']['output']>;
   user_id?: Maybe<Scalars['bigint']['output']>;
 };
@@ -257,6 +297,7 @@ export type Message_Min_Order_By = {
   author?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   text?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -270,6 +311,13 @@ export type Message_Mutation_Response = {
   returning: Array<Message>;
 };
 
+/** input type for inserting object relation for remote table "message" */
+export type Message_Obj_Rel_Insert_Input = {
+  data: Message_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Message_On_Conflict>;
+};
+
 /** on_conflict condition type for table "message" */
 export type Message_On_Conflict = {
   constraint: Message_Constraint;
@@ -279,9 +327,12 @@ export type Message_On_Conflict = {
 
 /** Ordering options when selecting data from "message". */
 export type Message_Order_By = {
+  answers_aggregate?: InputMaybe<Message_Aggregate_Order_By>;
   author?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  question?: InputMaybe<Message_Order_By>;
+  question_id?: InputMaybe<Order_By>;
   text?: InputMaybe<Order_By>;
   user?: InputMaybe<User_Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -301,6 +352,8 @@ export enum Message_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  QuestionId = 'question_id',
+  /** column name */
   Text = 'text',
   /** column name */
   UserId = 'user_id'
@@ -311,6 +364,7 @@ export type Message_Set_Input = {
   author?: InputMaybe<Scalars['author']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  question_id?: InputMaybe<Scalars['bigint']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -319,12 +373,14 @@ export type Message_Set_Input = {
 export type Message_Stddev_Fields = {
   __typename?: 'message_stddev_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "message" */
 export type Message_Stddev_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -332,12 +388,14 @@ export type Message_Stddev_Order_By = {
 export type Message_Stddev_Pop_Fields = {
   __typename?: 'message_stddev_pop_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "message" */
 export type Message_Stddev_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -345,12 +403,14 @@ export type Message_Stddev_Pop_Order_By = {
 export type Message_Stddev_Samp_Fields = {
   __typename?: 'message_stddev_samp_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "message" */
 export type Message_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -367,6 +427,7 @@ export type Message_Stream_Cursor_Value_Input = {
   author?: InputMaybe<Scalars['author']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
+  question_id?: InputMaybe<Scalars['bigint']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -375,12 +436,14 @@ export type Message_Stream_Cursor_Value_Input = {
 export type Message_Sum_Fields = {
   __typename?: 'message_sum_fields';
   id?: Maybe<Scalars['bigint']['output']>;
+  question_id?: Maybe<Scalars['bigint']['output']>;
   user_id?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** order by sum() on columns of table "message" */
 export type Message_Sum_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -392,6 +455,8 @@ export enum Message_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
+  /** column name */
+  QuestionId = 'question_id',
   /** column name */
   Text = 'text',
   /** column name */
@@ -411,12 +476,14 @@ export type Message_Updates = {
 export type Message_Var_Pop_Fields = {
   __typename?: 'message_var_pop_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "message" */
 export type Message_Var_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -424,12 +491,14 @@ export type Message_Var_Pop_Order_By = {
 export type Message_Var_Samp_Fields = {
   __typename?: 'message_var_samp_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "message" */
 export type Message_Var_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -437,12 +506,14 @@ export type Message_Var_Samp_Order_By = {
 export type Message_Variance_Fields = {
   __typename?: 'message_variance_fields';
   id?: Maybe<Scalars['Float']['output']>;
+  question_id?: Maybe<Scalars['Float']['output']>;
   user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "message" */
 export type Message_Variance_Order_By = {
   id?: InputMaybe<Order_By>;
+  question_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -978,14 +1049,15 @@ export type User_Variance_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
 };
 
-export type UserFragment = { __typename?: 'user', id: any, name?: string | null };
-
-export type GetUserByIdQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['bigint']['input']>;
+export type CreateMessageMutationVariables = Exact<{
+  user_id: Scalars['bigint']['input'];
+  text: Scalars['String']['input'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', user_by_pk?: { __typename?: 'user', id: any, name?: string | null } | null };
+export type CreateMessageMutation = { __typename?: 'mutation_root', insert_message_one?: { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null } | null };
+
+export type UserFragment = { __typename?: 'user', id: any, name?: string | null };
 
 export type CreateUserMutationVariables = Exact<{
   name: Scalars['String']['input'];
@@ -994,20 +1066,17 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'mutation_root', insert_user_one?: { __typename?: 'user', id: any, name?: string | null } | null };
 
-export type CreateMessageMutationVariables = Exact<{
-  user_id: Scalars['bigint']['input'];
-  text: Scalars['String']['input'];
-}>;
-
-
-export type CreateMessageMutation = { __typename?: 'mutation_root', insert_message_one?: { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null } | null };
-
-export type ChatRoomMessageFragment = { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null };
+export type ChatRoomMessageFragment = { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null };
 
 export type LoadChatRoomQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LoadChatRoomQuery = { __typename?: 'query_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null }>, user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', count: number } | null } };
+export type LoadChatRoomQuery = { __typename?: 'query_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null }>, user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', count: number } | null } };
+
+export type GetLatestMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLatestMessageSubscription = { __typename?: 'subscription_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null }> };
 
 export const UserFragmentDoc = gql`
     fragment User on user {
@@ -1024,81 +1093,14 @@ export const ChatRoomMessageFragmentDoc = gql`
   user {
     ...User
   }
-}
-    ${UserFragmentDoc}`;
-export const GetUserByIdDocument = gql`
-    query GetUserByID($id: bigint = "") {
-  user_by_pk(id: $id) {
-    ...User
+  question {
+    user {
+      name
+    }
+    text
   }
 }
     ${UserFragmentDoc}`;
-
-/**
- * __useGetUserByIdQuery__
- *
- * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserByIdQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetUserByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
-      }
-export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
-        }
-export function useGetUserByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
-        }
-export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
-export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
-export type GetUserByIdSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdSuspenseQuery>;
-export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
-export const CreateUserDocument = gql`
-    mutation CreateUser($name: String!) {
-  insert_user_one(object: {name: $name}) {
-    ...User
-  }
-}
-    ${UserFragmentDoc}`;
-export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
-
-/**
- * __useCreateUserMutation__
- *
- * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
- *   variables: {
- *      name: // value for 'name'
- *   },
- * });
- */
-export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
-      }
-export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
-export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
-export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const CreateMessageDocument = gql`
     mutation CreateMessage($user_id: bigint!, $text: String!) {
   insert_message_one(object: {user_id: $user_id, text: $text}) {
@@ -1133,6 +1135,39 @@ export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
 export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
 export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($name: String!) {
+  insert_user_one(object: {name: $name}) {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const LoadChatRoomDocument = gql`
     query LoadChatRoom {
   message {
@@ -1177,3 +1212,32 @@ export type LoadChatRoomQueryHookResult = ReturnType<typeof useLoadChatRoomQuery
 export type LoadChatRoomLazyQueryHookResult = ReturnType<typeof useLoadChatRoomLazyQuery>;
 export type LoadChatRoomSuspenseQueryHookResult = ReturnType<typeof useLoadChatRoomSuspenseQuery>;
 export type LoadChatRoomQueryResult = Apollo.QueryResult<LoadChatRoomQuery, LoadChatRoomQueryVariables>;
+export const GetLatestMessageDocument = gql`
+    subscription GetLatestMessage {
+  message(order_by: {id: desc}, limit: 1) {
+    ...ChatRoomMessage
+  }
+}
+    ${ChatRoomMessageFragmentDoc}`;
+
+/**
+ * __useGetLatestMessageSubscription__
+ *
+ * To run a query within a React component, call `useGetLatestMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLatestMessageSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLatestMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetLatestMessageSubscription, GetLatestMessageSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetLatestMessageSubscription, GetLatestMessageSubscriptionVariables>(GetLatestMessageDocument, options);
+      }
+export type GetLatestMessageSubscriptionHookResult = ReturnType<typeof useGetLatestMessageSubscription>;
+export type GetLatestMessageSubscriptionResult = Apollo.SubscriptionResult<GetLatestMessageSubscription>;

@@ -9,6 +9,12 @@ export const CHAT_ROOM_MESSAGE_FRAGMENT = gql`
     user {
       ...User
     }
+    question {
+      user {
+        name
+      }
+      text
+    }
   }
 `;
 
@@ -21,6 +27,14 @@ export const LOAD_CHAT_ROOM_QUERY = gql`
       aggregate {
         count
       }
+    }
+  }
+`;
+
+export const GET_LATEST_MESSAGE = gql`
+  subscription GetLatestMessage {
+    message(order_by: { id: desc }, limit: 1) {
+      ...ChatRoomMessage
     }
   }
 `;
