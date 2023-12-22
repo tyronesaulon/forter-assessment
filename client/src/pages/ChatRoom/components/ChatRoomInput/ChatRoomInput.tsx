@@ -12,11 +12,16 @@ export function ChatRoomInput({ onSend, sending }: ChatRoomInput) {
   const [message, setMessage] = useState('');
 
   const handleSend = async () => {
+    const value = message.trim();
+    if (!value) {
+      return;
+    }
+
     try {
-      await onSend(message);
+      await onSend(value);
       setMessage('');
     } catch (e) {
-      console.error('failed to send message', message);
+      console.error('failed to send message', value);
     }
   };
 
@@ -33,6 +38,7 @@ export function ChatRoomInput({ onSend, sending }: ChatRoomInput) {
   return (
     <Stack gap="xs">
       <Textarea
+        size="md"
         mb={0}
         value={message}
         onChange={handleOnChange}
@@ -44,8 +50,9 @@ export function ChatRoomInput({ onSend, sending }: ChatRoomInput) {
             onClick={handleSend}
             loading={sending}
             mr="lg"
+            radius="xl"
           >
-            <IconSend />
+            <IconSend size={18} />
           </ActionIcon>
         }
       />

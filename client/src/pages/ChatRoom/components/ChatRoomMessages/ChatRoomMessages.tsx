@@ -5,13 +5,17 @@ import * as Classes from './ChatRoomMessages.module.css';
 
 export interface ChatRoomMessagesProps {
   messages: ChatRoomMessageFragment[];
+  onAnswer: (message?: ChatRoomMessageFragment) => void;
 }
 
-export function ChatRoomMessages({ messages }: ChatRoomMessagesProps) {
+export function ChatRoomMessages({
+  messages,
+  onAnswer,
+}: ChatRoomMessagesProps) {
   return (
     <Stack className={Classes.container}>
       {messages.map((message) => (
-        <MessageBubble key={message.id} message={message} />
+        <MessageBubble key={message.id} message={message} onAnswer={onAnswer} />
       ))}
     </Stack>
   );
