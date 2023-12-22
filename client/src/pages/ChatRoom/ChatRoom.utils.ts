@@ -2,8 +2,16 @@ import {
   ChatRoomMessageFragment,
   LoadChatRoomQuery,
 } from '../../graphql.types.tsx';
+import * as dayjs from 'dayjs';
+import * as utc from 'dayjs/plugin/utc';
+import * as timezone from 'dayjs/plugin/timezone';
+import * as relativeTime from 'dayjs/plugin/relativeTime';
 
-export function getMessagesWithUser(
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(relativeTime);
+
+export function getMessagesByQueryResult(
   data?: LoadChatRoomQuery,
 ): ChatRoomMessageFragment[] {
   return data?.message ?? [];
@@ -15,4 +23,9 @@ export function getTotalParticipants(data?: LoadChatRoomQuery): number {
 
 export function getUserNameByFragment(data?: ChatRoomMessageFragment): string {
   return data?.user?.name ?? 'unknown';
+}
+
+export function getTimeLabelByDate(date: Date): string {
+  const tz = dayjs.tz.guess();
+  return dayjs(date).tz(tz).fromNow(); // TODO: fix relative time
 }
