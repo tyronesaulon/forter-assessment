@@ -23,3 +23,8 @@
 .otherUser {
     align-self: flex-start;
 }
+
+.username {
+    display: flex;
+    align-items: center;
+}
