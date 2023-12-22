@@ -1,17 +1,19 @@
-import { Message } from '../../../../../domains/Message/Message.models.ts';
 import { Box, Text } from '@mantine/core';
-import { User } from '../../../../../domains/User/User.model.ts';
+import { ChatRoomMessageFragment } from '../../../../../graphql.types.tsx';
+import { getUserNameByFragment } from '../../../ChatRoom.utils.ts';
 
 export interface MessageBubbleProps {
-  message: Message;
-  user: User;
+  message: ChatRoomMessageFragment;
+  isCurrentUser?: boolean;
 }
 
-export function MessageBubble({ message, user }: MessageBubbleProps) {
+export function MessageBubble({ message }: MessageBubbleProps) {
+  const name = getUserNameByFragment(message);
   return (
     <Box>
-      <Text>{user.name}</Text>
+      <Text>{name}</Text>
       <Text>{message.text}</Text>
+      <Text>{message.created_at}</Text>
     </Box>
   );
 }
