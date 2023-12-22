@@ -1052,6 +1052,7 @@ export type User_Variance_Fields = {
 export type CreateMessageMutationVariables = Exact<{
   user_id: Scalars['bigint']['input'];
   text: Scalars['String']['input'];
+  question_id?: InputMaybe<Scalars['bigint']['input']>;
 }>;
 
 
@@ -1102,8 +1103,10 @@ export const ChatRoomMessageFragmentDoc = gql`
 }
     ${UserFragmentDoc}`;
 export const CreateMessageDocument = gql`
-    mutation CreateMessage($user_id: bigint!, $text: String!) {
-  insert_message_one(object: {user_id: $user_id, text: $text}) {
+    mutation CreateMessage($user_id: bigint!, $text: String!, $question_id: bigint = null) {
+  insert_message_one(
+    object: {user_id: $user_id, text: $text, question_id: $question_id}
+  ) {
     ...ChatRoomMessage
   }
 }
@@ -1125,6 +1128,7 @@ export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutat
  *   variables: {
  *      user_id: // value for 'user_id'
  *      text: // value for 'text'
+ *      question_id: // value for 'question_id'
  *   },
  * });
  */
