@@ -22,11 +22,11 @@ import { useState } from 'react';
 import { ChatRoomQuestionPreview } from './components/ChatRoomQuestionPreview/ChatRoomQuestionPreview.tsx';
 import { apollo } from '../../clients/apollo.client.ts';
 
-function hasMessage(
+function isMessageCached(
   chatRoomQuery: LoadChatRoomQuery | null | undefined,
   message: ChatRoomMessageFragment,
 ) {
-  return chatRoomQuery?.message.some((m) => m.id === message.id);
+  return chatRoomQuery?.message.some((m) => m.id === message.id) ?? false;
 }
 
 function cacheNewMessage(message: ChatRoomMessageFragment): void {
@@ -34,8 +34,7 @@ function cacheNewMessage(message: ChatRoomMessageFragment): void {
     query: LoadChatRoomDocument,
   });
 
-  const exists = hasMessage(chatRoomQuery, message);
-  if (exists) return;
+  if (isMessageCached(chatRoomQuery, message)) return;
 
   const messages = chatRoomQuery?.message.slice() ?? [];
   messages.push(message);
