@@ -31,8 +31,8 @@ export const LOAD_CHAT_ROOM_QUERY = gql`
   }
 `;
 
-export const GET_LATEST_MESSAGE = gql`
-  subscription GetLatestMessage {
+export const ON_NEW_MESSAGE_SUBSCRIPTION = gql`
+  subscription OnNewMessage {
     message(order_by: { id: desc }, limit: 1) {
       ...ChatRoomMessage
     }

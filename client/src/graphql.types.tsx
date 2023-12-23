@@ -1074,10 +1074,10 @@ export type LoadChatRoomQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type LoadChatRoomQuery = { __typename?: 'query_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null }>, user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', count: number } | null } };
 
-export type GetLatestMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type OnNewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLatestMessageSubscription = { __typename?: 'subscription_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null }> };
+export type OnNewMessageSubscription = { __typename?: 'subscription_root', message: Array<{ __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null }> };
 
 export const UserFragmentDoc = gql`
     fragment User on user {
@@ -1216,8 +1216,8 @@ export type LoadChatRoomQueryHookResult = ReturnType<typeof useLoadChatRoomQuery
 export type LoadChatRoomLazyQueryHookResult = ReturnType<typeof useLoadChatRoomLazyQuery>;
 export type LoadChatRoomSuspenseQueryHookResult = ReturnType<typeof useLoadChatRoomSuspenseQuery>;
 export type LoadChatRoomQueryResult = Apollo.QueryResult<LoadChatRoomQuery, LoadChatRoomQueryVariables>;
-export const GetLatestMessageDocument = gql`
-    subscription GetLatestMessage {
+export const OnNewMessageDocument = gql`
+    subscription OnNewMessage {
   message(order_by: {id: desc}, limit: 1) {
     ...ChatRoomMessage
   }
@@ -1225,23 +1225,23 @@ export const GetLatestMessageDocument = gql`
     ${ChatRoomMessageFragmentDoc}`;
 
 /**
- * __useGetLatestMessageSubscription__
+ * __useOnNewMessageSubscription__
  *
- * To run a query within a React component, call `useGetLatestMessageSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetLatestMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useOnNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetLatestMessageSubscription({
+ * const { data, loading, error } = useOnNewMessageSubscription({
  *   variables: {
  *   },
  * });
  */
-export function useGetLatestMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetLatestMessageSubscription, GetLatestMessageSubscriptionVariables>) {
+export function useOnNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<OnNewMessageSubscription, OnNewMessageSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GetLatestMessageSubscription, GetLatestMessageSubscriptionVariables>(GetLatestMessageDocument, options);
+        return Apollo.useSubscription<OnNewMessageSubscription, OnNewMessageSubscriptionVariables>(OnNewMessageDocument, options);
       }
-export type GetLatestMessageSubscriptionHookResult = ReturnType<typeof useGetLatestMessageSubscription>;
-export type GetLatestMessageSubscriptionResult = Apollo.SubscriptionResult<GetLatestMessageSubscription>;
+export type OnNewMessageSubscriptionHookResult = ReturnType<typeof useOnNewMessageSubscription>;
+export type OnNewMessageSubscriptionResult = Apollo.SubscriptionResult<OnNewMessageSubscription>;

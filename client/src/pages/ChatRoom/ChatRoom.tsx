@@ -4,8 +4,11 @@ import { ChatRoomMessages } from './components/ChatRoomMessages/ChatRoomMessages
 import { ChatRoomInput } from './components/ChatRoomInput/ChatRoomInput.tsx';
 import {
   ChatRoomMessageFragment,
+  LoadChatRoomDocument,
+  LoadChatRoomQuery,
   useCreateMessageMutation,
   useLoadChatRoomQuery,
+  useOnNewMessageSubscription,
 } from '../../graphql.types.tsx';
 import {
   getMessagesByQueryResult,
@@ -17,6 +20,31 @@ import * as SharedClasses from '../../shared/shared.module.css';
 import * as Classes from './ChatRoom.module.css';
 import { useState } from 'react';
 import { ChatRoomQuestionPreview } from './components/ChatRoomQuestionPreview/ChatRoomQuestionPreview.tsx';
+import { apollo } from '../../clients/apollo.client.ts';
+
+function hasMessage(
+  chatRoomQuery: LoadChatRoomQuery | null | undefined,
+  message: ChatRoomMessageFragment,
+) {
+  return chatRoomQuery?.message.some((m) => m.id === message.id);
+}
+
+function cacheNewMessage(message: ChatRoomMessageFragment): void {
+  const chatRoomQuery = apollo.cache.readQuery<LoadChatRoomQuery>({
+    query: LoadChatRoomDocument,
+  });
+
+  const exists = hasMessage(chatRoomQuery, message);
+  if (exists) return;
+
+  const messages = chatRoomQuery?.message.slice() ?? [];
+  messages.push(message);
+
+  apollo.cache.writeQuery({
+    query: LoadChatRoomDocument,
+    data: { ...chatRoomQuery, message: messages },
+  });
+}
 
 export function ChatRoom() {
   const { currentUser } = useUserContext();
@@ -25,6 +53,15 @@ export function ChatRoom() {
   const [question, setQuestion] = useState<ChatRoomMessageFragment>();
   const messages = getMessagesByQueryResult(data);
   const totalParticipants = getTotalParticipants(data);
+
+  useOnNewMessageSubscription({
+    onData: ({ data: result }) => {
+      const newMessage = result.data?.message?.[0];
+      if (!newMessage) return;
+
+      cacheNewMessage(newMessage);
+    },
+  });
 
   const handleClosePreview = () => {
     setQuestion(undefined);
