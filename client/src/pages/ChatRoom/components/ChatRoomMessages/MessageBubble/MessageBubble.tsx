@@ -18,6 +18,8 @@ import { clsx } from 'clsx';
 import { useUserContext } from '../../../../../contexts/UserContext/useUserContext.ts';
 import { isQuestion } from './MessageBubble.utils.ts';
 import { IconMessagePlus } from '@tabler/icons-react';
+import { ChatRoomQuestionPreview } from './ChatRoomQuestionPreview/ChatRoomQuestionPreview.tsx';
+import { UsernameText } from './UsernameText/UsernameText.tsx';
 
 export interface MessageBubbleProps {
   message: ChatRoomMessageFragment;
@@ -27,7 +29,6 @@ export interface MessageBubbleProps {
 
 export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
   const { currentUser } = useUserContext();
-  const question = isQuestion(message?.text);
   const name = getUserNameByFragment(message) || 'Anonymous';
   const timestamp = useMemo(
     () => getTimeLabelByDate(message.created_at),
@@ -46,15 +47,15 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
         h="50px"
       >
         <Group justify="space-between">
-          <Text className={Classes.username} size="sm" fw={500} m={0}>
+          <UsernameText>
             {name}
             {isCurrentUser && (
               <Badge component="span" size="xs" ml={4}>
                 You
               </Badge>
             )}
-          </Text>
-          {question && (
+          </UsernameText>
+          {isQuestion(message?.text) && (
             <Tooltip label="Answer">
               <ActionIcon
                 size="md"
@@ -67,6 +68,7 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
             </Tooltip>
           )}
         </Group>
+        <ChatRoomQuestionPreview question={message?.question} />
         <Text size="sm" m={0}>
           {message.text}
         </Text>
