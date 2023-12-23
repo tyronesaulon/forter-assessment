@@ -1067,6 +1067,8 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'mutation_root', insert_user_one?: { __typename?: 'user', id: any, name?: string | null } | null };
 
+export type ChatRoomQuestionFragment = { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null };
+
 export type ChatRoomMessageFragment = { __typename?: 'message', author: any, created_at: any, id: any, text?: string | null, user?: { __typename?: 'user', id: any, name?: string | null } | null, question?: { __typename?: 'message', text?: string | null, user?: { __typename?: 'user', name?: string | null } | null } | null };
 
 export type LoadChatRoomQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1085,6 +1087,14 @@ export const UserFragmentDoc = gql`
   name
 }
     `;
+export const ChatRoomQuestionFragmentDoc = gql`
+    fragment ChatRoomQuestion on message {
+  user {
+    name
+  }
+  text
+}
+    `;
 export const ChatRoomMessageFragmentDoc = gql`
     fragment ChatRoomMessage on message {
   author
@@ -1095,13 +1105,11 @@ export const ChatRoomMessageFragmentDoc = gql`
     ...User
   }
   question {
-    user {
-      name
-    }
-    text
+    ...ChatRoomQuestion
   }
 }
-    ${UserFragmentDoc}`;
+    ${UserFragmentDoc}
+${ChatRoomQuestionFragmentDoc}`;
 export const CreateMessageDocument = gql`
     mutation CreateMessage($user_id: bigint!, $text: String!, $question_id: bigint = null) {
   insert_message_one(

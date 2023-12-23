@@ -1,5 +1,14 @@
 import { gql } from '@apollo/client';
 
+export const CHAT_ROOM_QUESTION_FRAGMENT = gql`
+  fragment ChatRoomQuestion on message {
+    user {
+      name
+    }
+    text
+  }
+`;
+
 export const CHAT_ROOM_MESSAGE_FRAGMENT = gql`
   fragment ChatRoomMessage on message {
     author
@@ -10,10 +19,7 @@ export const CHAT_ROOM_MESSAGE_FRAGMENT = gql`
       ...User
     }
     question {
-      user {
-        name
-      }
-      text
+      ...ChatRoomQuestion
     }
   }
 `;
