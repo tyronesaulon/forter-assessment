@@ -2,7 +2,7 @@ import { Stack } from '@mantine/core';
 import { MessageBubble } from './MessageBubble/MessageBubble.tsx';
 import { ChatRoomMessageFragment } from '../../../../graphql.types.tsx';
 import * as Classes from './ChatRoomMessages.module.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export interface ChatRoomMessagesProps {
   messages: ChatRoomMessageFragment[];
@@ -14,13 +14,9 @@ export function ChatRoomMessages({
   onAnswer,
 }: ChatRoomMessagesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [initialized, setInitialized] = useState(false);
 
-  // init scroll position to bottom
   useEffect(() => {
-    if (initialized) return;
-    if (!messages.length || !containerRef.current) return;
-    setInitialized(true);
+    if (!containerRef.current) return;
     containerRef.current.scrollTop = containerRef.current.scrollHeight;
   }, [messages]);
 

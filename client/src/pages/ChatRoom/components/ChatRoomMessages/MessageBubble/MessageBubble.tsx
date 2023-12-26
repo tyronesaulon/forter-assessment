@@ -35,6 +35,7 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
     [message.created_at],
   );
 
+  const showAnswerButton = isQuestion(message?.text);
   const isCurrentUser = currentUser && currentUser?.id === message?.user?.id;
   const isBotUser = message?.author === 'BOT';
 
@@ -57,7 +58,7 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
               </Badge>
             )}
           </UsernameText>
-          {isQuestion(message?.text) && (
+          {showAnswerButton && (
             <Tooltip label="Answer">
               <ActionIcon
                 size="md"
