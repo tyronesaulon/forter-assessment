@@ -22,14 +22,16 @@ export function getTotalParticipants(data?: LoadChatRoomQuery): number {
 }
 
 export function getUserNameByFragment(data?: ChatRoomMessageFragment): string {
-  const id = data?.user?.id ?? '';
-  const name = data?.user?.name ?? 'unknown';
-  let username = name;
-  if (id) {
-    username = name;
+  let name = '';
+  if (!data?.user?.id) {
+    name = 'Clarence';
+  } else if (!data?.user?.name) {
+    name = 'Anonymous';
+  } else {
+    name = data.user.name;
   }
 
-  return username;
+  return name;
 }
 
 export function getTimeLabelByDate(date: Date): string {

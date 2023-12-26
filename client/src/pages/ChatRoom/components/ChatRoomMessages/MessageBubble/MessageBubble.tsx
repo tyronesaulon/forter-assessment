@@ -36,6 +36,7 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
   );
 
   const isCurrentUser = currentUser && currentUser?.id === message?.user?.id;
+  const isBotUser = message?.author === 'BOT';
 
   return (
     <Stack gap={5}>
@@ -43,6 +44,7 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
         className={clsx(Classes.message, {
           [Classes.currentUser]: isCurrentUser,
           [Classes.otherUser]: !isCurrentUser,
+          [Classes.clarence]: isBotUser,
         })}
         h="50px"
       >
@@ -68,7 +70,10 @@ export function MessageBubble({ message, onAnswer }: MessageBubbleProps) {
             </Tooltip>
           )}
         </Group>
-        <ChatRoomQuestionPreview question={message?.question} />
+        <ChatRoomQuestionPreview
+          question={message?.question}
+          isBotPreview={isBotUser}
+        />
         <Text size="sm" m={0}>
           {message.text}
         </Text>

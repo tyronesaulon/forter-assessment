@@ -2,18 +2,14 @@
     text-align: start;
     max-width: 80%;
     border-radius: 8px;
-    background-color: var(--mantine-color-blue-7);
     word-wrap: break-word;
     padding: 12px;
     height: auto !important;
-}
-
-.light {
-    background-color: var(--mantine-color-blue-4);
-}
-
-.dark {
     background-color: var(--mantine-color-blue-7);
+}
+
+.clarence {
+    background-color: var(--mantine-color-violet-7) !important;
 }
 
 .currentUser {

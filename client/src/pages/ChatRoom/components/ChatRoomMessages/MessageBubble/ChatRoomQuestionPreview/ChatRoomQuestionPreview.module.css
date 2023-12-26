@@ -2,3 +2,7 @@
     background-color: var(--mantine-color-blue-9);
     border-radius: 8px;
 }
+
+.clarence {
+    background-color: var(--mantine-color-violet-9);
+}
