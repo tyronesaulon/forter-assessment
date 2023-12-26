@@ -17,7 +17,7 @@ export class PersonalityService {
 
     const chain = RunnableSequence.from([
       PromptTemplate.fromTemplate(
-        `Add some witty, humorous and spicy attitude to the answer based on the the following question and answer.\n{question}\n{answer}`,
+        `Display the answer with some witty, humorous and spicy attitude based on the the following question and answer.\n{question}\n{answer}`,
       ),
       this.openai.llm,
     ]);
