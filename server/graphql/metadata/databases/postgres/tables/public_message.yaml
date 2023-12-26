@@ -1,0 +1,58 @@
+table:
+  name: message
+  schema: public
+object_relationships:
+  - name: question
+    using:
+      foreign_key_constraint_on: question_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+array_relationships:
+  - name: answers
+    using:
+      foreign_key_constraint_on:
+        column: question_id
+        table:
+          name: message
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - id
+        - question_id
+        - text
+        - user_id
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - author
+        - created_at
+        - id
+        - question_id
+        - text
+        - user_id
+      filter: {}
+      allow_aggregations: true
+    comment: ""
+event_triggers:
+  - name: on_message_insert
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 3
+      timeout_sec: 60
+    webhook: '{{API_BASE_URL}}/message/webhook'
+    request_transform:
+      body:
+        action: transform
+        template: '{{$body.event.data.new}}'
+      template_engine: Kriti
+      version: 2

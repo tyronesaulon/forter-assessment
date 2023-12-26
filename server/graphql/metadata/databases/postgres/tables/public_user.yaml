@@ -1,0 +1,28 @@
+table:
+  name: user
+  schema: public
+array_relationships:
+  - name: messages
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: message
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - id
+        - name
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}
+      allow_aggregations: true
+    comment: ""
