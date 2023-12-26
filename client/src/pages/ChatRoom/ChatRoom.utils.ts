@@ -7,9 +7,9 @@ import * as utc from 'dayjs/plugin/utc';
 import * as timezone from 'dayjs/plugin/timezone';
 import * as relativeTime from 'dayjs/plugin/relativeTime';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
 dayjs.extend(relativeTime);
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 export function getMessagesByQueryResult(
   data?: LoadChatRoomQuery,
@@ -34,7 +34,6 @@ export function getUserNameByFragment(data?: ChatRoomMessageFragment): string {
   return name;
 }
 
-export function getTimeLabelByDate(date: Date): string {
-  const tz = dayjs.tz.guess();
-  return dayjs(date).tz(tz).fromNow(); // TODO: fix relative time
+export function getTimeLabelByDate(date: string): string {
+  return dayjs(date).utc(true).fromNow();
 }
