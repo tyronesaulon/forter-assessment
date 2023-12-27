@@ -21,6 +21,11 @@ This backend makes use of the following services:
 1. Create `.env` file in project's root directory
 2. Copy environment variables from `.env.example` to `.env`
 
+You will need to generate the value for the environment variable for `OPEN_AI_API_KEY` [here](https://platform.openai.com/api-keys)
+if you don't already have one. OpenAI detects any leaked api keys and removes them from the OpenAI management console.
+
+![img_2.png](img_2.png)
+
 ## Installation
 
 ```bash
